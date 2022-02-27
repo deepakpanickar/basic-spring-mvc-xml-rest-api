@@ -10,6 +10,6 @@ public class RestApi {
 	@ResponseBody
 	@GetMapping(value = "/api", produces="application/json")
 	public String testApi() {
-		return "Success5";
+		return "Success-6";
 	}
 }
