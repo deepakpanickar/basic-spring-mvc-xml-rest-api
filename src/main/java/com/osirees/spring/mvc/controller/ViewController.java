@@ -10,6 +10,6 @@ public class ViewController {
 	@GetMapping(value = "/view")
 	public String index(Model model) {
         model.addAttribute("recipient", "World");
-        return "home.html";
+        return "home";
     }
 }

@@ -26,26 +26,17 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @EnableWebMvc
 public class MvcConfiguration implements WebMvcConfigurer, ApplicationContextAware {
 
+	private ApplicationContext applicationContext;
+
 	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		// UrlBasedViewResolverRegistration jsp = registry.jsp("/WEB-INF/views/",
-		// ".jsp");
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
 	}
-//	
-//	@Bean
-//	@Description("Thymeleaf Template Resolver")
-//	public ServletContextTemplateResolver templateResolver() {
-//	    ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
-//	    templateResolver.setPrefix("/WEB-INF/views/");
-//	    templateResolver.setSuffix(".html");
-//	    templateResolver.setTemplateMode("HTML5");
-//	    return templateResolver;
-//	}
 
 	@Bean
 	@Description("Thymeleaf Template Engine")
@@ -53,7 +44,6 @@ public class MvcConfiguration implements WebMvcConfigurer, ApplicationContextAwa
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		templateEngine.setEnableSpringELCompiler(true);
 		templateEngine.setTemplateResolver(templateResolver());
-		templateEngine.setTemplateEngineMessageSource(messageSource());
 		return templateEngine;
 	}
 
@@ -69,22 +59,8 @@ public class MvcConfiguration implements WebMvcConfigurer, ApplicationContextAwa
 		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
 		resolver.setApplicationContext(applicationContext);
 		resolver.setPrefix("/WEB-INF/views/");
+		resolver.setSuffix(".html");
 		resolver.setTemplateMode(TemplateMode.HTML);
 		return resolver;
 	}
-
-	@Bean
-	@Description("Spring Message Resolver")
-	public ResourceBundleMessageSource messageSource() {
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename("messages");
-		return messageSource;
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
-
-	private ApplicationContext applicationContext;
 }
